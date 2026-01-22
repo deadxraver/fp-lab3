@@ -1,0 +1,30 @@
+name: "ci"
+run-name: "build & test"
+
+on: [push]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/setup@v2
+        id: setup-haskell
+        with:
+          ghc-version: 'latest'
+          enable-stack: true
+          stack-version: 'latest'
+          stack-no-global: true
+      - name: "Install dependencies"
+        run: |
+          stack install fourmolu
+          sudo apt update
+          sudo apt install hlint
+      - name: "Lint & Format"
+        run: |
+          hlint app src test
+          fourmolu --mode check app src test
+      - name: "Build"
+        run: stack build
+      - name: "Test"
+        run: stack test
