@@ -21,13 +21,12 @@ main = do
     args <- getArgs
     let linear = checkLinear args
         lagrange = checkLagrange args
+        process = unlines {-. map show-} . mapMaybe parsePair . lines
+        parsePair line = case map (read :: String -> Float) (words line) of
+            [x, y] -> do
+                -- future logic with numbers here
+                Just (show x ++ " " ++ show y)
+            _ -> Nothing
      in do
             putStrLn $ "Linear:" ++ show linear ++ "\nLagrange:" ++ show lagrange
             interact process
-  where
-    process = unlines {-. map show-} . mapMaybe parsePair . lines
-    parsePair line = case map (read :: String -> Float) (words line) of
-        [x, y] -> do
-            -- future logic with numbers here
-            Just (show x ++ " " ++ show y)
-        _ -> Nothing
