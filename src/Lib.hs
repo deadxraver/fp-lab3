@@ -1,6 +1,10 @@
 module Lib (
-    someFunc,
+    linearInterpolate,
+    lagrangeInterpolate,
 ) where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+linearInterpolate :: [(Float, Float)] -> Float
+linearInterpolate _ = 0 -- TODO:
+
+lagrangeInterpolate :: [(Float, Float)] -> Float
+lagrangeInterpolate _ = 0 -- TODO:
