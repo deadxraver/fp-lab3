@@ -43,7 +43,7 @@ main = do
             putStrLn $ "Linear:" ++ show linear ++ "\nLagrange:" ++ show lagrange
             case maybeN of
                 Just n -> putStrLn $ "n=" ++ show n
-                Nothing -> error "n not specified"
+                Nothing -> if lagrange then error "n not specified" else putStrLn "n=null"
             case maybeStep of
                 Just step -> putStrLn $ "step=" ++ show step
                 Nothing -> error "step not specified"
