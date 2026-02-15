@@ -3,8 +3,13 @@ module Lib (
     lagrangeInterpolate,
 ) where
 
-linearInterpolate :: Double -> [(Double, Double)] -> Double
-linearInterpolate _ _ = 0 -- TODO:
+-- linear interpolation takes two last numbers if present and interpolates
+--                   x          X           Y           res
+linearInterpolate :: Double -> [Double] -> [Double] -> Maybe Double
+linearInterpolate x [x1, x2] [y1, y2] = Just $ y2 + (y1 - y2) / (x1 - x2) * (x - x2)
+linearInterpolate x [] [] = Nothing
+linearInterpolate x (x1 : xarr) (y1 : yarr) = linearInterpolate x xarr yarr
+linearInterpolate _ _ _ = Nothing
 
 --                     x          X           Y           res
 lagrangeInterpolate :: Double -> [Double] -> [Double] -> Double

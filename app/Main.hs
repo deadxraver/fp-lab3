@@ -47,4 +47,6 @@ main = do
             case maybeStep of
                 Just step -> putStrLn $ "step=" ++ show step
                 Nothing -> error "step not specified"
-            interact process
+            if not (linear || lagrange)
+                then error "You must pick at least 1 method (linear/lagrange)"
+                else interact process
