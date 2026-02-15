@@ -17,40 +17,15 @@ checkLinear = check "--linear"
 checkLagrange :: [String] -> Bool
 checkLagrange = check "--lagrange"
 
-getN :: [String] -> Maybe Integer
+getN :: [String] -> Maybe Int
 getN ("-n" : n : _) = Just $ read n
 getN (_ : ss) = getN ss
 getN [] = Nothing
 
-getStep :: [String] -> Maybe Float
+getStep :: [String] -> Maybe Double
 getStep ("--step" : step : _) = Just $ read step
 getStep (_ : ss) = getStep ss
 getStep [] = Nothing
-
-{-main = do
-    args <- getArgs
-    let linear = checkLinear args
-        lagrange = checkLagrange args
-        maybeN = getN args
-        maybeStep = getStep args
-        process = unlines {-. map show-} . mapMaybe parsePair . lines
-        parsePair line = case map (read :: String -> Float) (words line) of
-            [x, y] -> do
-                -- TODO: future logic with numbers here
-                Just (show x ++ " " ++ show y)
-            _ -> Nothing
-     in do
-            putStrLn $ "Linear:" ++ show linear ++ "\nLagrange:" ++ show lagrange
-            case maybeN of
-                Just n -> putStrLn $ "n=" ++ show n
-                Nothing -> if lagrange then error "n not specified" else putStrLn "n=null"
-            case maybeStep of
-                Just step -> putStrLn $ "step=" ++ show step
-                Nothing -> error "step not specified"
-            if not (linear || lagrange)
-                then error "You must pick at least 1 method (linear/lagrange)"
-                else interact process
-                  -}
 
 main = do
     args <- getArgs
@@ -58,7 +33,7 @@ main = do
         lagrange = checkLagrange args
         maybeN = getN args
         maybeStep = getStep args
-        parsePair line = case map (read :: String -> Float) (words line) of
+        parsePair line = case map (read :: String -> Double) (words line) of
             [x, y] -> do
                 Just (x, y)
             _ -> Nothing
@@ -73,8 +48,17 @@ main = do
                             let newXarr = xi : xarr
                                 newYarr = yi : yarr
                                 step = fromJust maybeStep
+                                n = fromJust maybeN
+                            when linear $
+                                case linearInterpolate x newXarr newYarr of
+                                    Just yLin -> putStrLn $ "linear: " ++ show x ++ " " ++ show yLin
+                                    Nothing -> return ()
+                            when lagrange $
+                                case lagrangeInterpolateN x newXarr newYarr n of
+                                    Just yLag -> putStrLn $ "lagrange: " ++ show x ++ " " ++ show yLag
+                                    Nothing -> return ()
                             -- TODO:
-                            putStrLn $ "x=" ++ show x ++ ",X=" ++ show newXarr ++ ",Y=" ++ show newYarr
+                            -- putStrLn $ "x=" ++ show x ++ ",X=" ++ show newXarr ++ ",Y=" ++ show newYarr
                             loop (x + step) newXarr newXarr
                         Nothing -> error $ "unknown format:" ++ line
     case maybeStep of
