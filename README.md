@@ -94,6 +94,55 @@ linear: 4.0 4.0
 lagrange: 4.0 4.0
 ```
 
+```bash
+$ stack run -- --step 0.5 --lagrange -n 4
+step=0.5
+n=4
+> 0 0
+> 1 1
+linear: 0.0 0.0
+linear: 0.5 0.5
+> 2 2
+linear: 1.0 1.0
+linear: 1.5 1.5
+> 3 3
+linear: 2.0 2.0
+linear: 2.5 2.5
+lagrange: 0.0 0.0
+lagrange: 0.5 0.5
+lagrange: 1.0 1.0
+lagrange: 1.5 1.5
+lagrange: 2.0 2.0
+lagrange: 2.5 2.5
+> 4 4
+linear: 3.0 3.0
+linear: 3.5 3.5
+lagrange: 3.0 3.0
+lagrange: 3.5 3.5
+> 5 5
+linear: 4.0 4.0
+linear: 4.5 4.5
+lagrange: 4.0 4.0
+lagrange: 4.5 4.5
+> 6 6
+linear: 5.0 5.0
+linear: 5.5 5.5
+lagrange: 5.0 5.0
+lagrange: 5.5 5.5
+> 7 7
+linear: 6.0 6.0
+linear: 6.5 6.5
+lagrange: 6.0 6.0
+lagrange: 6.5 6.5
+> 8 8
+linear: 7.0 7.0
+linear: 7.5 7.5
+lagrange: 7.0 7.0
+lagrange: 7.5 7.5
+> ^D
+linear: 8.0 8.0
+lagrange: 8.0 8.0
+```
 
 ## Выводы
 

@@ -49,7 +49,7 @@ main = do
             [x, y] -> do
                 Just (x, y)
             _ -> Nothing
-        loop x xarr yarr = do
+        loop xLi xLa xarr yarr = do
             eof <- isEOF
             if eof
                 then do
@@ -63,17 +63,22 @@ main = do
                                 newYarr = yi : yarr
                                 step = fromJust maybeStep
                                 n = fromJust maybeN
-                                calcArr = valsBetween x step (head xarr) xi
-                                nextX = case calcArr of
+                                calcArrLi = valsBetween xLi step (head xarr) xi
+                                calcArrLa = valsBetween xLa step xLa xi
+                                nextXLi = case calcArrLi of
                                     (val : _) -> val
-                                    [] -> x
+                                    [] -> xLi
+                                nextXLa =
+                                    if length newXarr >= n
+                                        then head newXarr
+                                        else xLa
                             when (not (null xarr) && xi < head xarr) $
                                 error "x input should be sorted!"
                             when linear $
-                                calcToBound calcArr (\newX -> linearInterpolate newX newXarr newYarr) "linear: "
+                                calcToBound calcArrLi (\newX -> linearInterpolate newX newXarr newYarr) "linear: "
                             when lagrange $
-                                calcToBound calcArr (\newX -> lagrangeInterpolateN newX newXarr newYarr n) "lagrange: "
-                            loop nextX newXarr newXarr
+                                calcToBound calcArrLa (\newX -> lagrangeInterpolateN newX newXarr newYarr n) "lagrange: "
+                            loop nextXLi nextXLa newXarr newXarr
                         Nothing -> error $ "unknown format:" ++ line
     case maybeStep of
         Just step -> putStrLn $ "step=" ++ show step
@@ -84,7 +89,9 @@ main = do
             Nothing -> error "n not specified for Lagrange"
     unless (lagrange || linear) $
         error "at least 1 method should be picked"
-    line <- getLine
-    case parsePair line of
-        Just (x, y) -> loop x [x] [y]
-        Nothing -> error $ "unknown format: " ++ line
+    eof <- isEOF
+    unless eof $ do
+        line <- getLine
+        case parsePair line of
+            Just (x, y) -> loop x x [x] [y]
+            Nothing -> error $ "unknown format: " ++ line
