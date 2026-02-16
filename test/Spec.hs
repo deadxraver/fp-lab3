@@ -14,14 +14,17 @@ testLinear1 = isNothing $ linearInterpolate 1 [1] [1]
 
 -- Correct result on correct input
 testLinear2 :: Bool
-testLinear2 = linearInterpolate 2 [0, 1] [0, 1] == Just 2
+testLinear2 = linearInterpolate 2 [1, 0] [1, 0] == Just 2
 
 -- Only last 2 points taken
 testLinear3 :: Bool
-testLinear3 = linearInterpolate 4 [-1, 1, 2] [-2, 1, 2] == Just 4
+testLinear3 = linearInterpolate 4 [2, 1, -1] [2, 1, -2] == Just 4
 
 testLagrange1 :: Bool
 testLagrange1 = lagrangeInterpolate 2 [-2, -1, 0] [4, 1, 0] == 4
 
 testLagrange2 :: Bool
 testLagrange2 = lagrangeInterpolate (-10) [-2, 0, 1] [4, 0, 1] == 100
+
+testLagrangeNProperty :: Bool
+testLagrangeNProperty = lagrangeInterpolateN (-10) [1, 0, -2] [1, 0, 4] 2 == Just (lagrangeInterpolate (-10) [1, 0] [1, 0])

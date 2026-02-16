@@ -7,7 +7,7 @@ module Lib (
 -- linear interpolation takes two first numbers if present and interpolates
 --                   x          X           Y           res
 linearInterpolate :: Double -> [Double] -> [Double] -> Maybe Double
-linearInterpolate x (x1 : x2 : _) (y1 : y2 : _) = Just $ y2 + (y1 - y2) / (x1 - x2) * (x - x2)
+linearInterpolate x (x2 : x1 : _) (y2 : y1 : _) = Just $ y2 + (y1 - y2) / (x1 - x2) * (x - x2)
 linearInterpolate _ _ _ = Nothing
 
 --                     x          X           Y           res
