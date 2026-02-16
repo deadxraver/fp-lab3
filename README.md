@@ -95,7 +95,7 @@ lagrange: 4.0 4.0
 ```
 
 ```bash
-$ stack run -- --step 0.5 --lagrange -n 4
+$ stack run -- --step 0.5 --lagrange -n 4 --linear
 step=0.5
 n=4
 > 0 0
